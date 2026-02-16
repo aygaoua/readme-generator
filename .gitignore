@@ -1,0 +1,4 @@
+node_modules/
+GENERATED_README.md
+*.log
+.DS_Store
