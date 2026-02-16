@@ -1,14 +1,22 @@
 {
   "name": "aygaoua-readme-generator",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A smart CLI tool that generates professional README.md files by auto-detecting project info from package.json and git config.",
   "main": "index.js",
+  "types": "index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "bin": {
     "readme-gen": "index.js"
   },
   "scripts": {
-    "test": "node index.js --help"
+    "test": "node --test test.js",
+    "prepublishOnly": "npm test"
   },
   "keywords": [
     "readme",
@@ -18,25 +26,26 @@
     "documentation",
     "scaffold"
   ],
-  "author": "aygaoua",
+  "author": "aygaoua <zgaoua72@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "README.md",
     "LICENSE"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/aygaoua/readme-generator.git"
+    "url": "git+https://github.com/aygaoua/readme-generator.git"
   },
   "bugs": {
     "url": "https://github.com/aygaoua/readme-generator/issues"
   },
   "homepage": "https://github.com/aygaoua/readme-generator#readme",
   "dependencies": {
-    "inquirer": "^9.2.12"
+    "inquirer": "9.2.12"
   }
 }

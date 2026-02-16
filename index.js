@@ -4,6 +4,7 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 // --- HELPERS ---
 
@@ -210,6 +211,9 @@ const buildQuestions = (detected) => {
   return questions;
 };
 
+// --- Exports for testing ---
+export { readJSON, gitConfig, getGitHubUser, detectProjectInfo, generateMarkdown, buildQuestions };
+
 // --- 3. MAIN ---
 
 const showVersion = () => {
@@ -288,4 +292,11 @@ const init = async () => {
   }
 };
 
-init();
+// Start the application only when run directly (not when imported for testing)
+const isMain = process.argv[1] && (
+  process.argv[1] === fileURLToPath(import.meta.url) ||
+  process.argv[1].endsWith('/readme-gen')
+);
+if (isMain) {
+  init();
+}
