@@ -49,7 +49,7 @@ const detectProjectInfo = () => {
     if (typeof pkg.author === 'string') {
       const m = pkg.author.match(/^([^<]*)<([^>]+)>/);
       if (m) { authorName = m[1].trim(); authorEmail = m[2].trim(); }
-      else authorName = pkg.author;
+      else {authorName = pkg.author;}
     } else {
       authorName = pkg.author.name || '';
       authorEmail = pkg.author.email || '';
@@ -92,12 +92,12 @@ const generateMarkdown = (data) => {
   const sections = [];
 
   sections.push(`# ${data.title}\n`);
-  if (licenseBadge) sections.push(licenseBadge + '\n');
+  if (licenseBadge) {sections.push(licenseBadge + '\n');}
   sections.push(`## Description\n${data.description}\n`);
 
   // Build Table of Contents dynamically
   const toc = ['Installation', 'Usage', 'License', 'Contributing'];
-  if (data.tests) toc.push('Tests');
+  if (data.tests) {toc.push('Tests');}
   toc.push('Questions');
   sections.push(
     '## Table of Contents\n' +
@@ -243,11 +243,11 @@ const init = async () => {
     const detected = detectProjectInfo();
 
     const autoDetected = [];
-    if (detected.title)       autoDetected.push(`  Project:  ${detected.title}`);
-    if (detected.github)      autoDetected.push(`  GitHub:   ${detected.github}`);
-    if (detected.email)       autoDetected.push(`  Email:    ${detected.email}`);
-    if (detected.installation) autoDetected.push(`  Install:  ${detected.installation}`);
-    if (detected.tests)       autoDetected.push(`  Tests:    ${detected.tests}`);
+    if (detected.title)       {autoDetected.push(`  Project:  ${detected.title}`);}
+    if (detected.github)      {autoDetected.push(`  GitHub:   ${detected.github}`);}
+    if (detected.email)       {autoDetected.push(`  Email:    ${detected.email}`);}
+    if (detected.installation) {autoDetected.push(`  Install:  ${detected.installation}`);}
+    if (detected.tests)       {autoDetected.push(`  Tests:    ${detected.tests}`);}
 
     console.log('\n📝  README Generator\n');
     if (autoDetected.length) {
