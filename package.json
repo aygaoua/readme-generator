@@ -1,6 +1,6 @@
 {
   "name": "aygaoua-readme-generator",
-  "version": "1.4.0",
+  "version": "1.5.1",
   "description": "A smart CLI tool that generates professional README.md files by auto-detecting project info from package.json and git config.",
   "main": "index.js",
   "types": "index.d.ts",

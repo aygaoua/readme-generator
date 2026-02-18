@@ -3,8 +3,8 @@
 import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
-import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 // --- HELPERS ---
 
@@ -17,24 +17,54 @@ const readJSON = (filePath) => {
   }
 };
 
-/** Try to get a value from git config (e.g. user.name, user.email). */
-const gitConfig = (key) => {
+/** Read a text file safely, returning empty string on failure. */
+const readText = (filePath) => {
   try {
-    return execFileSync('git', ['config', '--get', key], { encoding: 'utf-8' }).trim();
+    return fs.readFileSync(filePath, 'utf-8');
   } catch {
     return '';
   }
 };
 
+/**
+ * Parse a git config file (.git/config or ~/.gitconfig) and return
+ * a lookup function for section.key values.
+ */
+const parseGitConfig = (content) => {
+  const result = {};
+  let currentSection = '';
+  for (const line of content.split('\n')) {
+    const sectionMatch = line.match(/^\[(\w+)(?:\s+"([^"]+)")?\]/);
+    if (sectionMatch) {
+      currentSection = sectionMatch[2]
+        ? `${sectionMatch[1]}.${sectionMatch[2]}`
+        : sectionMatch[1];
+      continue;
+    }
+    const kvMatch = line.match(/^\s*(\w+)\s*=\s*(.+)$/);
+    if (kvMatch && currentSection) {
+      result[`${currentSection}.${kvMatch[1]}`] = kvMatch[2].trim();
+    }
+  }
+  return result;
+};
+
+/** Try to get a value from git config by reading config files directly. */
+const gitConfig = (key) => {
+  // Try local .git/config first, then global ~/.gitconfig
+  const cwd = process.cwd();
+  const localConfig = parseGitConfig(readText(path.join(cwd, '.git', 'config')));
+  if (localConfig[key]) {return localConfig[key];}
+
+  const globalConfig = parseGitConfig(readText(path.join(os.homedir(), '.gitconfig')));
+  return globalConfig[key] || '';
+};
+
 /** Try to extract GitHub username from a git remote URL. */
 const getGitHubUser = () => {
-  try {
-    const url = execFileSync('git', ['config', '--get', 'remote.origin.url'], { encoding: 'utf-8' }).trim();
-    const match = url.match(/github\.com[:/]([^/]+)\//);
-    return match ? match[1] : '';
-  } catch {
-    return '';
-  }
+  const url = gitConfig('remote.origin.url');
+  const match = url.match(/github\.com[:/]([^/]+)\//);
+  return match ? match[1] : '';
 };
 
 /** Detect project info from the current directory's package.json + git config. */
