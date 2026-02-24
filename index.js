@@ -63,8 +63,20 @@ const gitConfig = (key) => {
 /** Try to extract GitHub username from a git remote URL. */
 const getGitHubUser = () => {
   const url = gitConfig('remote.origin.url');
-  const match = url.match(/github\.com[:/]([^/]+)\//);
-  return match ? match[1] : '';
+  // SSH format: git@github.com:user/repo.git
+  const sshMatch = url.match(/^git@github\.com:([^/]+)/);
+  if (sshMatch) { return sshMatch[1]; }
+  // HTTPS format: https://github.com/user/repo
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === 'github.com') {
+      const username = parsed.pathname.split('/')[1];
+      return username && username.trim() ? username : '';
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return '';
 };
 
 /** Detect project info from the current directory's package.json + git config. */
@@ -162,7 +174,7 @@ const generateMarkdown = (data) => {
   sections.push(
     `## Questions\n` +
     `For questions or issues, open an issue or contact me at **${data.email}**.\n` +
-    `Find more of my work on [GitHub](${'https'}://${'github.com'}/${data.github}).\n`
+    `Find more of my work on [GitHub](https://github.com/${encodeURIComponent(data.github)}).\n`
   );
 
   return sections.join('\n');
