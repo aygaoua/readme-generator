@@ -59,7 +59,7 @@
   },
   "homepage": "https://github.com/aygaoua/readme-generator#readme",
   "dependencies": {
-    "inquirer": "9.3.8"
+    "inquirer": "14.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
