@@ -1,0 +1,30 @@
+# Socket.dev security configuration
+# https://docs.socket.dev/docs/socket-yml
+
+version: 2
+
+# GitHub App settings
+githubApp:
+  enabled: true
+  # Monitor all PRs for supply chain risks
+  pullRequestAlertsEnabled: true
+  # Block PRs with critical alerts
+  projectReportsEnabled: true
+
+# Issue rules
+issueRules:
+  # Critical risks — always flag
+  installScripts: error
+  networkAccess: warn
+  shellAccess: error
+  filesystemAccess: warn
+  envVars: warn
+  # Supply chain risks
+  typosquat: error
+  protestware: error
+  malware: error
+  # Quality signals
+  noREADME: warn
+  noLicense: error
+  deprecated: error
+  unmaintained: warn

@@ -1,0 +1,68 @@
+{
+  "name": "aygaoua-readme-generator",
+  "version": "1.8.0",
+  "description": "A smart CLI tool that generates professional README.md files by auto-detecting project info from package.json and git config.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "bin": {
+    "readme-gen": "index.js"
+  },
+  "scripts": {
+    "test": "node --test test.js",
+    "lint": "eslint index.js test.js",
+    "prepublishOnly": "npm run lint && npm test"
+  },
+  "keywords": [
+    "readme",
+    "generator",
+    "markdown",
+    "cli",
+    "documentation",
+    "scaffold",
+    "readme-generator",
+    "project-init",
+    "auto-detect",
+    "npm-tool"
+  ],
+  "author": "aygaoua <zgaoua72@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/aygaoua"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aygaoua/readme-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aygaoua/readme-generator/issues"
+  },
+  "homepage": "https://github.com/aygaoua/readme-generator#readme",
+  "dependencies": {
+    "inquirer": "9.3.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0"
+  }
+}

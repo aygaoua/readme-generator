@@ -1,0 +1,26 @@
+name: Publish Package to npmjs
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # This permissions block is REQUIRED for Trusted Publishing
+    permissions:
+      contents: read
+      id-token: write 
+      
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x' 
+          registry-url: 'https://registry.npmjs.org'
+          
+      - run: npm ci
+      
+      # Publish using provenance (no secret token required!)
+      - run: npm publish --provenance
