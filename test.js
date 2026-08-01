@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import fc from 'fast-check';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -67,6 +68,30 @@ describe('generateMarkdown', () => {
     const md = generateMarkdown(baseData);
     assert.ok(md.includes('## Table of Contents'));
     assert.ok(md.includes('[Installation](#installation)'));
+  });
+
+  it('should handle fuzzed markdown input safely', () => {
+    fc.assert(
+      fc.property(
+        fc.record({
+          title: fc.string(),
+          description: fc.string(),
+          installation: fc.string(),
+          usage: fc.string(),
+          contributing: fc.string(),
+          tests: fc.string(),
+          email: fc.string(),
+          github: fc.string(),
+          license: fc.constantFrom('MIT', 'Apache-2.0', 'GPL-3.0', 'BSD-3-Clause', 'None'),
+        }),
+        (input) => {
+          const md = generateMarkdown(input);
+          assert.equal(typeof md, 'string');
+          assert.ok(md.includes('## Description'));
+        }
+      ),
+      { numRuns: 100 }
+    );
   });
 });
 
