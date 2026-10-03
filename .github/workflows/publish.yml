@@ -21,7 +21,4 @@ jobs:
 
       - run: npm ci
 
-      # Publish with npm token authentication
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish --provenance
